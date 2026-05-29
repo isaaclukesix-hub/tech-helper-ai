@@ -15,13 +15,6 @@ const PORT = process.env.PORT || 3000;
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-app.use((req, res, next) => {
-  if (req.headers.host && req.headers.host.includes("tech-helper-ai")) {
-    return res.redirect(301, "https://logifix.onrender.com" + req.url);
-  }
-  next();
-});
-
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
@@ -146,6 +139,10 @@ app.post("/api/chat", upload.single("image"), async (req, res) => {
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+app.get("/health", (req, res) => {
+  res.send("Server OK");
 });
 
 // Handle multer file-size errors
